@@ -643,7 +643,7 @@ with st.sidebar:
         # Redirect back to Flask login page (route "/")
         st.markdown(
             """
-            <meta http-equiv="refresh" content="0; url=http://127.0.0.1:5000/">
+            <meta http-equiv="refresh" content="0; url=https://flask-login.onrender.com/">
             """,
             unsafe_allow_html=True,
         )

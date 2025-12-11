@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: flask-login
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python ui/server.py
+    plan: free
+
+  - type: web
+    name: streamlit-dashboard
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run ui/app.py --server.port 10000 --server.address 0.0.0.0
+    plan: free
