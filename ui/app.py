@@ -15,11 +15,17 @@ from collections import defaultdict
 # ---------- ENTITY EXTRACTION (NER) ----------
 import spacy
 import re
+import streamlit.components.v1 as components
+from google import genai 
+from dotenv import load_dotenv
+from groq import Groq
+load_dotenv()  
 
 # ----------------------------------------
 # 🔐 JWT CONFIG
 # ----------------------------------------
 SECRET_KEY = "abghy57ghhbghyju787hgyhluck"
+
 
 # Read token safely for all Streamlit versions
 # IMPORTANT: no .to_dict() here
@@ -27,7 +33,52 @@ params = {k: v for k, v in st.query_params.items()}
 
 nlp = spacy.load("en_core_web_sm")
 
+client = Groq(api_key="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")
 
+def ask_llama(prompt):
+    response = client.chat.completions.create(
+        model="llama-3.1-8b-instant",
+        messages=[{"role": "user", "content": prompt}]
+    )
+    return response.choices[0].message.content
+
+
+# -------------------------------
+# Function to send message
+# -------------------------------
+def ask_llama(user_msg):
+    system_prompt = """
+    You are an AI that ONLY answers based on the 'Cross Domain Knowledge Mapping' project.
+
+    Allowed Knowledge:
+    - Dataset with columns (id, domain, sentence, label)
+    - Entity extraction using spaCy NER
+    - Rule-based relation extraction (subject → verb → object)
+    - Using nsubj, dobj, pobj dependencies
+    - Semantic search using SentenceTransformer embeddings
+    - Knowledge graph creation using NetworkX + PyVis
+    - Cross-domain analogies and mappings
+    - Export entities/relations to CSV
+    - Generate HTML knowledge graph
+
+    RULES:
+    - If the question is about the project → answer with project-specific explanations.
+    - If the question is unrelated → reply:
+      "This question is not part of the Cross Domain Knowledge Mapping project."
+    - Do NOT give general NLP answers.
+    """
+
+    response = client.chat.completions.create(
+        model="llama-3.1-8b-instant",
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_msg}
+        ]
+    )
+    return response.choices[0].message.content
+
+    st.session_state.messages.append((user_msg, ai_reply))
+    st.session_state.chat_input = ""  # Clear input safely
 def extract_entities(text):
     doc = nlp(str(text))
     return [(ent.text, ent.label_) for ent in doc.ents]
@@ -143,7 +194,8 @@ st.markdown("""
         
         [data-testid="stSidebar"] .stRadio > label:hover {
             background: rgba(255, 255, 255, 0.15);
-            border-left: 3px solid #667eea;
+            font-size: 13px;
+  border-left: 3px solid #667eea;
             transform: translateX(5px);
         }
         
@@ -559,6 +611,57 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+# ============================================
+# Streamlit Page
+# ============================================
+st.set_page_config(page_title="🤖 AI Assistance Chatbot", layout="centered")
+
+st.markdown("""
+<style>
+.chat-container {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.ai-response-box {
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%);
+    padding: 15px;
+    border-radius: 15px;
+    margin-top: 5px;
+    border-left: 4px solid #667eea;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+}
+
+.chat-input-box input {
+    border-radius: 12px !important;
+    padding: 12px !important;
+    border: 2px solid #667eea !important;
+    font-size: 16px;
+}
+
+.ask-btn button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    border: none;
+    color: white !important;
+    padding: 12px 26px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 10px;
+    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
+}
+
+.ask-btn button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.55);
+}
+</style>
+""", unsafe_allow_html=True)
+
+
 
 # ----------------------------------------
 # 👤 SIDEBAR SIGN-IN / SIGN-OUT
@@ -605,6 +708,7 @@ pages = [
     "Feedback Analysis",
     "Admin Tools",
     "Download Options",
+    "AI Assistance Chatbot" 
 ]
 
 if "current_page" not in st.session_state:
@@ -643,7 +747,7 @@ with st.sidebar:
         # Redirect back to Flask login page (route "/")
         st.markdown(
             """
-            <meta http-equiv="refresh" content="0; url=https://flask-login.onrender.com/">
+            <meta http-equiv="refresh" content="0; url=http://127.0.0.1:5000/">
             """,
             unsafe_allow_html=True,
         )
@@ -1298,3 +1402,64 @@ elif choice == "Download Options":
         feedback_df.to_csv(index=False).encode("utf-8"),
         "feedback.csv",
     )
+# ===============================
+# 🤖 AI CHATBOT PAGE
+# ===============================
+
+import streamlit as st
+
+# Initialize session state
+if "messages" not in st.session_state:
+    st.session_state.messages = []  # List to store (user_msg, ai_reply) tuples
+if "chat_input" not in st.session_state:
+    st.session_state.chat_input = ""
+
+st.title("🤖 AI Assistance")
+
+# Display info
+st.markdown("""
+Ask any question related to:
+- Dataset  
+- Knowledge graph  
+- Entity extraction  
+- Semantic search  
+- Any domain-related topic  
+
+The AI will respond instantly.
+""")
+
+# --------------------------------------------
+# Function to send message
+# --------------------------------------------
+def send_message():
+    user_msg = st.session_state.chat_input
+    if user_msg.strip() == "":
+        st.warning("Please type something to ask.")
+        return
+    with st.spinner("AI Thinking..."):
+        ai_reply = ask_llama(user_msg)  # Replace with your AI function
+    st.session_state.messages.append((user_msg, ai_reply))
+    st.session_state.chat_input = ""  # Clear input safely
+
+# --------------------------------------------
+# Input box and buttons
+# --------------------------------------------
+st.text_input("Your Question", key="chat_input")
+
+col1, col2 = st.columns([1, 1])
+
+with col1:
+    st.button("Ask", key="ask_btn", on_click=send_message)
+
+with col2:
+    if st.button("Clear Chat", key="clear_btn"):
+        st.session_state.messages = []
+
+# --------------------------------------------
+# Display chat history
+# --------------------------------------------
+if "messages" in st.session_state:
+    # Display newest messages first
+    for user_msg, ai_msg in reversed(st.session_state.messages):
+        st.markdown(f'<div class="chat-container"><b>You:</b> {user_msg}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="ai-response-box"><b>AI:</b> {ai_msg}</div>', unsafe_allow_html=True)
