@@ -4,7 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - Cross Domain Knowledge Mapping</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
 * {
     margin: 0;
@@ -32,11 +34,7 @@ body {
 
 .particles {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+    inset: 0;
     z-index: 0;
     pointer-events: none;
 }
@@ -45,62 +43,37 @@ body {
     position: absolute;
     width: 10px;
     height: 10px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255,255,255,0.1);
     border-radius: 50%;
     animation: float 15s infinite;
 }
 
-.particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 20s; }
-.particle:nth-child(2) { left: 20%; animation-delay: 2s; animation-duration: 25s; }
-.particle:nth-child(3) { left: 30%; animation-delay: 4s; animation-duration: 18s; }
-.particle:nth-child(4) { left: 40%; animation-delay: 1s; animation-duration: 22s; }
-.particle:nth-child(5) { left: 50%; animation-delay: 3s; animation-duration: 19s; }
-.particle:nth-child(6) { left: 60%; animation-delay: 5s; animation-duration: 21s; }
-.particle:nth-child(7) { left: 70%; animation-delay: 2s; animation-duration: 24s; }
-.particle:nth-child(8) { left: 80%; animation-delay: 4s; animation-duration: 17s; }
-.particle:nth-child(9) { left: 90%; animation-delay: 1s; animation-duration: 23s; }
+.particle:nth-child(1){left:10%;animation-duration:20s;}
+.particle:nth-child(2){left:20%;animation-duration:25s;}
+.particle:nth-child(3){left:30%;animation-duration:18s;}
+.particle:nth-child(4){left:40%;animation-duration:22s;}
+.particle:nth-child(5){left:50%;animation-duration:19s;}
+.particle:nth-child(6){left:60%;animation-duration:21s;}
+.particle:nth-child(7){left:70%;animation-duration:24s;}
+.particle:nth-child(8){left:80%;animation-duration:17s;}
+.particle:nth-child(9){left:90%;animation-duration:23s;}
 
 @keyframes float {
-    0%, 100% { 
-        transform: translateY(100vh) scale(0);
-        opacity: 0;
-    }
-    10% {
-        opacity: 1;
-    }
-    90% {
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(-100vh) scale(1);
-        opacity: 0;
-    }
+    0%,100% {transform: translateY(100vh) scale(0);opacity:0;}
+    10%,90% {opacity:1;}
+    100% {transform: translateY(-100vh) scale(1);}
 }
 
 .container {
     position: relative;
     z-index: 1;
-    width: 100%;
     max-width: 420px;
-    background: rgba(255, 255, 255, 0.95);
+    width: 100%;
+    background: rgba(255,255,255,0.95);
     backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
     border-radius: 24px;
     padding: 40px;
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    animation: slideUp 0.6s ease-out;
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
 }
 
 .logo {
@@ -111,32 +84,27 @@ body {
 .logo-icon {
     width: 80px;
     height: 80px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg,#667eea,#764ba2);
     border-radius: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 15px;
     font-size: 36px;
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
 h2 {
-    text-align: center;
-    margin-bottom: 10px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     font-size: 28px;
     font-weight: 700;
+    background: linear-gradient(135deg,#667eea,#764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 .subtitle {
-    text-align: center;
-    color: #718096;
     font-size: 14px;
-    margin-bottom: 30px;
+    color: #718096;
+    margin-top: 6px;
 }
 
 .input-group {
@@ -146,24 +114,10 @@ h2 {
 
 .input-group input {
     width: 100%;
-    padding: 16px 20px;
-    padding-left: 50px;
+    padding: 16px 20px 16px 50px;
     border: 2px solid #e2e8f0;
     border-radius: 14px;
     font-size: 16px;
-    transition: all 0.3s ease;
-    background: #f8fafc;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: #667eea;
-    background: white;
-    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-}
-
-.input-group input::placeholder {
-    color: #a0aec0;
 }
 
 .input-icon {
@@ -171,77 +125,17 @@ h2 {
     left: 18px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 18px;
-    color: #a0aec0;
-    transition: color 0.3s ease;
-}
-
-.input-group input:focus + .input-icon,
-.input-group input:not(:placeholder-shown) + .input-icon {
-    color: #667eea;
 }
 
 .btn {
     width: 100%;
     padding: 16px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg,#667eea,#764ba2);
     color: white;
     border: none;
     border-radius: 14px;
-    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-    position: relative;
-    overflow: hidden;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-    transition: left 0.5s ease;
-}
-
-.btn:hover::before {
-    left: 100%;
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
-}
-
-.btn:active {
-    transform: translateY(0);
-}
-
-.btn.loading {
-    pointer-events: none;
-}
-
-.btn.loading::after {
-    content: '';
-    width: 20px;
-    height: 20px;
-    border: 2px solid white;
-    border-top-color: transparent;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: middle;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
 }
 
 .links {
@@ -255,30 +149,8 @@ h2 {
 .link {
     color: #667eea;
     font-size: 14px;
-    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s ease;
     text-decoration: none;
-    position: relative;
-}
-
-.link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    transition: width 0.3s ease;
-}
-
-.link:hover::after {
-    width: 100%;
-}
-
-.link:hover {
-    color: #764ba2;
 }
 
 #loginMsg {
@@ -287,338 +159,109 @@ h2 {
     padding: 12px;
     border-radius: 10px;
     font-size: 14px;
-    font-weight: 500;
     opacity: 0;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
+    transition: 0.3s;
 }
 
-#loginMsg.show {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-#loginMsg.error {
-    background: #fed7d7;
-    color: #c53030;
-}
-
-#loginMsg.success {
-    background: #c6f6d5;
-    color: #276749;
-}
+#loginMsg.show { opacity: 1; }
+#loginMsg.error { background:#fed7d7; color:#c53030; }
+#loginMsg.success { background:#c6f6d5; color:#276749; }
 
 .autofill-trap {
-    position: absolute;
-    opacity: 0;
-    height: 0;
-    width: 0;
-    padding: 0;
-    margin: 0;
+    position:absolute;
+    opacity:0;
+    height:0;
+    width:0;
 }
 </style>
 </head>
+
 <body>
 
 <div class="particles">
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
 </div>
 
 <form autocomplete="off" onsubmit="return false;">
-    <div class="container">
-        <div class="logo">
-            <div class="logo-icon">🧭</div>
-            <h2>Welcome Back</h2>
-            <p class="subtitle">Sign in to Cross-Domain Knowledge Mapping</p>
-        </div>
+<div class="container">
 
-        <input type="text" class="autofill-trap" autocomplete="off">
-        <input type="password" class="autofill-trap" autocomplete="off">
-
-        <div class="input-group">
-            <input type="text" id="loginUser" placeholder="Username" 
-                   autocomplete="off" oninput="enableUserAutofill()" required>
-            <span class="input-icon">👤</span>
-        </div>
-
-        <div class="input-group">
-            <input type="password" id="loginPass" placeholder="Password"
-                   autocomplete="new-password" oninput="enablePassAutofill()" required>
-            <span class="input-icon">🔒</span>
-        </div>
-
-        <button class="btn" id="loginBtn" onclick="login()">Sign In</button>
-
-        <div id="loginMsg"></div>
-
-        <div class="links">
-            <a class="link" onclick="window.location.href='/register-page'">Create Account</a>
-            <a class="link" onclick="window.location.href='/forgot-page'">Forgot Password?</a>
-        </div>
+    <div class="logo">
+        <div class="logo-icon">🧭</div>
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Sign in to Cross-Domain Knowledge Mapping</p>
     </div>
+
+    <input class="autofill-trap" type="text">
+    <input class="autofill-trap" type="password">
+
+    <div class="input-group">
+        <input id="loginUser" type="text" placeholder="Username" required>
+        <span class="input-icon">👤</span>
+    </div>
+
+    <div class="input-group">
+        <input id="loginPass" type="password" placeholder="Password" required>
+        <span class="input-icon">🔒</span>
+    </div>
+
+    <button class="btn" id="loginBtn" onclick="login()">Sign In</button>
+
+    <div id="loginMsg"></div>
+
+    <div class="links">
+        <a class="link" onclick="location.href='/register-page'">Create Account</a>
+        <a class="link" onclick="location.href='/forgot-page'">Forgot Password?</a>
+    </div>
+
+</div>
 </form>
 
 <script>
-function showMessage(msg, type) {
-    const msgEl = document.getElementById('loginMsg');
-    msgEl.textContent = msg;
-    msgEl.className = 'show ' + type;
+function showMessage(msg,type){
+    const el=document.getElementById("loginMsg");
+    el.textContent=msg;
+    el.className="show "+type;
 }
 
-async function login() {
-    const btn = document.getElementById('loginBtn');
-    let username = loginUser.value.trim();
-    let password = loginPass.value.trim();
+async function login(){
+    const btn=document.getElementById("loginBtn");
+    const username=loginUser.value.trim();
+    const password=loginPass.value;
 
-    if (!username || !password) {
-        showMessage("Please fill in all fields", "error");
+    if(!username||!password){
+        showMessage("Please fill all fields","error");
         return;
     }
 
-    btn.classList.add('loading');
-    btn.textContent = 'Signing In';
+    btn.textContent="Signing In...";
 
-    try {
-        let res = await fetch("http://127.0.0.1:5000/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
-
-        let data = await res.json();
-
-        if (res.status === 200) {
-            localStorage.setItem("token", data.token);
-            showMessage("Login Successful! Redirecting...", "success");
-
-            const target = "http://localhost:8501/?token=" + encodeURIComponent(data.token);
-
-            setTimeout(() => {
-                window.location.href = target;
-            }, 1000);
-        } else {
-            showMessage(data.msg, "error");
-            btn.classList.remove('loading');
-            btn.textContent = 'Sign In';
-        }
-    } catch (err) {
-        showMessage("Server Error! Please try again.", "error");
-        btn.classList.remove('loading');
-        btn.textContent = 'Sign In';
-        console.error(err);
-    }
-}
-
-function enableUserAutofill() {
-    let user = document.getElementById("loginUser");
-    if (user.value.length === 1) {
-        user.setAttribute("autocomplete", "username");
-    }
-}
-
-function enablePassAutofill() {
-    let pass = document.getElementById("loginPass");
-    if (pass.value.length === 1) {
-        pass.setAttribute("autocomplete", "current-password");
-    }
-}
-
-document.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        login();
-    }
-});
-</script>
-
-</body>
-</html>
-
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Cross Domain Knowledge Mapping</title>
-<style>
-
-body {
-    margin:0; padding:0; font-family:Arial,sans-serif;
-    background:url("/static/login_image.jpg") no-repeat center center/cover;
-    height:100vh; display:flex; justify-content:center; align-items:center;
-}
-
-
-.container { width:380px; background:rgba(255,255,255,0.7);
-            backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-            border-radius:20px; padding:25px; box-shadow:0 8px 25px rgba(0,0,0,0.25);
-            border:1px solid rgba(255,255,255,0.3); }
-h2 { text-align:center; margin-bottom:20px; }
-input { width:100%; padding:10px; margin:8px 0; border:1px solid #888; border-radius:5px; }
-.btn { width:100%; padding:10px; background:#8a44a1; color:white; border:none; border-radius:5px; cursor:pointer; }
-.btn:hover { background:#6e1bdb; }
-.link { text-align:center; margin-top:10px; color:#b072b0; cursor:pointer; }
-</style>
-</head>
-<body>
-     <div class="container">
-    <h2>Login</h2>
-
-    <input type="text" id="loginUser" placeholder="Username"
-           autocomplete="username" 
-           autocapitalize="none"
-           required>
-
-    <input type="password" id="loginPass" placeholder="Password"
-           autocomplete="current-password"
-           required>
-
-    <button class="btn" onclick="login()">Login</button>
-
-    <div class="link" onclick="window.location.href='/register-page'">Register</div>
-    <div class="link" onclick="window.location.href='/forgot-page'">Forgot Password?</div>
-
-    <p id="loginMsg" style="color:red; text-align:center;"></p>
-</div> -->
-
-
-
-    <!-- <form autocomplete="off" onsubmit="return false;">
-<div class="container">
-    <h2>Login</h2>
-
-    Autofill Trap
-    <input type="text" style="opacity:0; height:0; position:absolute;" autocomplete="off">
-    <input type="password" style="opacity:0; height:0; position:absolute;" autocomplete="off">
-
-    <input type="text" id="loginUser" placeholder="Username"
-       autocomplete="off"
-       oninput="enableUserAutofill()"
-       required>
-
-<input type="password" id="loginPass" placeholder="Password"
-       autocomplete="new-password"
-       oninput="enablePassAutofill()"
-       required>
-
-
-    <button class="btn" onclick="login()">Login</button>
-
-    <div class="link" onclick="window.location.href='/register-page'">Register</div>
-    <div class="link" onclick="window.location.href='/forgot-page'">Forgot Password?</div>
-
-    <p id="loginMsg" style="color:red; text-align:center;"></p>
-</div>
-</form> 
-
-
-<script>
-async function login() {
-    let username = loginUser.value.trim();
-    let password = loginPass.value;
-
-    if(!username || !password){ loginMsg.innerText="Fill all fields"; return; }
-
-    try {
-        let res = await fetch("http://127.0.0.1:5000/login", {
+    try{
+        const res=await fetch("http://127.0.0.1:5000/login",{
             method:"POST",
             headers:{"Content-Type":"application/json"},
             body:JSON.stringify({username,password})
         });
-        let data = await res.json();
-        if (res.status === 200) {
-    localStorage.setItem("token", data.token);
-    loginMsg.style.color = "green";
-    loginMsg.innerText = "Login Successful!";
 
-    // Redirect to Streamlit app and pass JWT as query parameter
-    const streamlitUrl = "http://localhost:8501";  // change if different
-    const target = streamlitUrl + "/?token=" + encodeURIComponent(data.token);
+        const data=await res.json();
 
-    setTimeout(() => {
-        window.location.href = target;
-    }, 1000);
-}
- else { loginMsg.innerText=data.msg; }
-    } catch(err){ loginMsg.innerText="Server Error!"; console.error(err); }
-}
-</script> -->
-<!-- <script>
-async function login() {
-    let username = loginUser.value.trim();
-    let password = loginPass.value.trim();
-
-    if (!username || !password) {
-        loginMsg.innerText = "Fill all fields";
-        return;
-    }
-
-    try {
-        let res = await fetch("http://127.0.0.1:5000/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password })
-        });
-
-        let data = await res.json();
-
-        if (res.status === 200) {
-
-            // Save token
-            localStorage.setItem("token", data.token);
-            loginMsg.style.color = "green";
-            loginMsg.innerText = "Login Successful! Redirecting...";
-
-            // Redirect to Streamlit with token
-            const target = "http://localhost:8501/?token=" + encodeURIComponent(data.token);
-
-            // Only ONE redirect — this avoids errors
-            setTimeout(() => {
-                window.location.href = target;
-            }, 700);
-
-        } else {
-            loginMsg.innerText = data.msg;
+        if(res.status===200){
+            localStorage.setItem("token",data.token);
+            showMessage("Login Successful!","success");
+            setTimeout(()=>{
+                location.href="http://localhost:8501/?token="+encodeURIComponent(data.token);
+            },800);
+        }else{
+            showMessage(data.msg,"error");
+            btn.textContent="Sign In";
         }
-
-    } catch (err) {
-        loginMsg.innerText = "Server Error!";
-        console.error(err);
-    }
-}
-
-
-function enableUserAutofill() {
-    let user = document.getElementById("loginUser");
-
-    // After typing 1 letter → allow saved usernames
-    if (user.value.length === 1) {
-        user.setAttribute("autocomplete", "username");
-    }
-}
-
-function enablePassAutofill() {
-    let pass = document.getElementById("loginPass");
-
-    // After first letter → allow saved passwords
-    if (pass.value.length === 1) {
-        pass.setAttribute("autocomplete", "current-password");
+    }catch{
+        showMessage("Server Error","error");
+        btn.textContent="Sign In";
     }
 }
 </script>
 
-
-
-
-
-
-
 </body>
-</html>  -->
+</html>
