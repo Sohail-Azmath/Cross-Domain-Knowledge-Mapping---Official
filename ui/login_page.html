@@ -246,16 +246,17 @@ async function login(){
 
         const data=await res.json();
 
-        if(res.status===200){
-            localStorage.setItem("token",data.token);
-            showMessage("Login Successful!","success");
-            setTimeout(()=>{
-                location.href="http://localhost:8501/?token="+encodeURIComponent(data.token);
-            },800);
-        }else{
-            showMessage(data.msg,"error");
-            btn.textContent="Sign In";
-        }
+               if (res.status === 200) {
+    localStorage.setItem("token", data.token);
+    showMessage("Login Successful!", "success");
+    setTimeout(() => {
+        location.href = "http://localhost:8502/?token=" + encodeURIComponent(data.token);
+    }, 800);
+} else {
+    showMessage(data.msg, "error");
+    btn.textContent = "Sign In";
+}
+
     }catch{
         showMessage("Server Error","error");
         btn.textContent="Sign In";
