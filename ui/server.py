@@ -78,6 +78,23 @@ def verify():
         return jsonify({"user": decoded["user"]})
     except:
         return jsonify({"msg": "Invalid or expired token"}), 401
+# -----------------------------
+# NEW: Chat API
+# -----------------------------
+@app.post("/chat")
+def chat():
+    data = request.json
+    user_msg = data.get("message", "")
+
+    if not user_msg:
+        return jsonify({"reply": "Please send a valid message."})
+
+    # Example AI response
+    # Replace this with your actual AI / semantic search / model logic
+    bot_reply = f"Echo: {user_msg}"
+
+    return jsonify({"reply": bot_reply})
+
 
 if __name__ == "__main__":
     app.run(debug=True)
