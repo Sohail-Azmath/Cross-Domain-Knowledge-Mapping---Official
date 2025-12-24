@@ -16,7 +16,7 @@ from collections import defaultdict
 import spacy
 import re
 import streamlit.components.v1 as components
-from google import genai 
+
 from dotenv import load_dotenv
 from groq import Groq
 load_dotenv()  
