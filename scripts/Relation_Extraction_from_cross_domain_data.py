@@ -5,7 +5,7 @@ import spacy
 nlp = spacy.load("en_core_web_sm")
 
 # Load dataset
-data = pd.read_csv("cross_domain_nlp_dataset_5000.csv")  # change filename if needed
+data = pd.read_csv("../Data/Raw/cross_domain_nlp_dataset_5000.csv")  # change filename if needed
 
 # Function to extract relations (subject, relation, object) from text
 def extract_relations(text):
@@ -40,5 +40,5 @@ data["relations"] = data["sentence"].apply(extract_relations)
 print(data.head())
 
 # Save to new CSV
-data.to_csv("relations_extracted_dataset.csv", index=False)
+data.to_csv("../Data/Processed/relations_extracted_dataset.csv", index=False)
 print("✅ Relations saved to relations_extracted_dataset.csv")

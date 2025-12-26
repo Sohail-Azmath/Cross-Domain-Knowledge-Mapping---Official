@@ -9,7 +9,24 @@ CORS(app)
 
 SECRET_KEY = "abghy57ghhbghyju787hgyhluck"
 
-users = {}  
+import json
+
+USERS_FILE = "users.json"
+
+def load_users():
+    if os.path.exists(USERS_FILE):
+        try:
+            with open(USERS_FILE, "r") as f:
+                return json.load(f)
+        except:
+            return {}
+    return {}
+
+def save_users(users_data):
+    with open(USERS_FILE, "w") as f:
+        json.dump(users_data, f, indent=4)
+
+users = load_users()  
 
 # Serve frontend HTML
 @app.get("/")
@@ -22,7 +39,7 @@ def reg_page():
 
 @app.get("/forgot-page")
 def forgot_page():
-    return send_from_directory('.', 'forgot.html')
+    return send_from_directory('.', 'forgot_password.html')
 
 # Your API routes remain the same
 @app.post("/register")
@@ -36,6 +53,7 @@ def register():
         return jsonify({"msg": "User already exists"}), 400
 
     users[username] = {"password": password, "type": usertype}
+    save_users(users)
     return jsonify({"msg": "Registered successfully"}), 200
 
 @app.post("/login")
@@ -68,6 +86,7 @@ def reset_password():
         return jsonify({"msg": "User not found"}), 404
 
     users[username]["password"] = newpass
+    save_users(users)
     return jsonify({"msg": "Password reset successful"}), 200
 
 @app.get("/verify")

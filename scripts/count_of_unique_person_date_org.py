@@ -5,7 +5,7 @@ import spacy
 nlp = spacy.load("en_core_web_sm")
 
 # Load dataset
-data = pd.read_csv("cross_domain_nlp_dataset_5000.csv")
+data = pd.read_csv("../Data/Raw/cross_domain_nlp_dataset_5000.csv")
 
 # Function to extract specific entities
 def extract_selected_entities(text):
@@ -33,5 +33,5 @@ print("✅ Unique entity counts:")
 print(unique_counts)
 
 # Optional: Save all extracted entities to CSV
-entities_df.to_csv("selected_entities_extracted.csv", index=False)
+entities_df.to_csv("../Data/Processed/selected_entities_extracted.csv", index=False)
 print("\nAll PERSON, ORG, and DATE entities saved to selected_entities_extracted.csv")

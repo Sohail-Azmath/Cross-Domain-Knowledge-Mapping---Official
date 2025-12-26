@@ -1,268 +1,342 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Cross Domain Knowledge Mapping</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Cross Domain Knowledge Mapping</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Inter', sans-serif;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
 
-body {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(-45deg, #667eea, #764ba2, #6B8DD6, #8E37D7);
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    padding: 20px;
-}
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(-45deg, #667eea, #764ba2, #6B8DD6, #8E37D7);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            padding: 20px;
+        }
 
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+        @keyframes gradientBG {
+            0% {
+                background-position: 0% 50%;
+            }
 
-.particles {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-}
+            50% {
+                background-position: 100% 50%;
+            }
 
-.particle {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 50%;
-    animation: float 15s infinite;
-}
+            100% {
+                background-position: 0% 50%;
+            }
+        }
 
-.particle:nth-child(1){left:10%;animation-duration:20s;}
-.particle:nth-child(2){left:20%;animation-duration:25s;}
-.particle:nth-child(3){left:30%;animation-duration:18s;}
-.particle:nth-child(4){left:40%;animation-duration:22s;}
-.particle:nth-child(5){left:50%;animation-duration:19s;}
-.particle:nth-child(6){left:60%;animation-duration:21s;}
-.particle:nth-child(7){left:70%;animation-duration:24s;}
-.particle:nth-child(8){left:80%;animation-duration:17s;}
-.particle:nth-child(9){left:90%;animation-duration:23s;}
+        .particles {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+        }
 
-@keyframes float {
-    0%,100% {transform: translateY(100vh) scale(0);opacity:0;}
-    10%,90% {opacity:1;}
-    100% {transform: translateY(-100vh) scale(1);}
-}
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
 
-.container {
-    position: relative;
-    z-index: 1;
-    max-width: 420px;
-    width: 100%;
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 24px;
-    padding: 40px;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.25);
-}
+        .particle:nth-child(1) {
+            left: 10%;
+            animation-duration: 20s;
+        }
 
-.logo {
-    text-align: center;
-    margin-bottom: 30px;
-}
+        .particle:nth-child(2) {
+            left: 20%;
+            animation-duration: 25s;
+        }
 
-.logo-icon {
-    width: 80px;
-    height: 80px;
-    background: linear-gradient(135deg,#667eea,#764ba2);
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 15px;
-    font-size: 36px;
-}
+        .particle:nth-child(3) {
+            left: 30%;
+            animation-duration: 18s;
+        }
 
-h2 {
-    font-size: 28px;
-    font-weight: 700;
-    background: linear-gradient(135deg,#667eea,#764ba2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+        .particle:nth-child(4) {
+            left: 40%;
+            animation-duration: 22s;
+        }
 
-.subtitle {
-    font-size: 14px;
-    color: #718096;
-    margin-top: 6px;
-}
+        .particle:nth-child(5) {
+            left: 50%;
+            animation-duration: 19s;
+        }
 
-.input-group {
-    position: relative;
-    margin-bottom: 24px;
-}
+        .particle:nth-child(6) {
+            left: 60%;
+            animation-duration: 21s;
+        }
 
-.input-group input {
-    width: 100%;
-    padding: 16px 20px 16px 50px;
-    border: 2px solid #e2e8f0;
-    border-radius: 14px;
-    font-size: 16px;
-}
+        .particle:nth-child(7) {
+            left: 70%;
+            animation-duration: 24s;
+        }
 
-.input-icon {
-    position: absolute;
-    left: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-}
+        .particle:nth-child(8) {
+            left: 80%;
+            animation-duration: 17s;
+        }
 
-.btn {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg,#667eea,#764ba2);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    font-weight: 600;
-    cursor: pointer;
-}
+        .particle:nth-child(9) {
+            left: 90%;
+            animation-duration: 23s;
+        }
 
-.links {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 1px solid #e2e8f0;
-}
+        @keyframes float {
 
-.link {
-    color: #667eea;
-    font-size: 14px;
-    cursor: pointer;
-    text-decoration: none;
-}
+            0%,
+            100% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
 
-#loginMsg {
-    text-align: center;
-    margin-top: 16px;
-    padding: 12px;
-    border-radius: 10px;
-    font-size: 14px;
-    opacity: 0;
-    transition: 0.3s;
-}
+            10%,
+            90% {
+                opacity: 1;
+            }
 
-#loginMsg.show { opacity: 1; }
-#loginMsg.error { background:#fed7d7; color:#c53030; }
-#loginMsg.success { background:#c6f6d5; color:#276749; }
+            100% {
+                transform: translateY(-100vh) scale(1);
+            }
+        }
 
-.autofill-trap {
-    position:absolute;
-    opacity:0;
-    height:0;
-    width:0;
-}
-</style>
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 420px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 36px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #718096;
+            margin-top: 6px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 16px;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .link {
+            color: #667eea;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        #loginMsg {
+            text-align: center;
+            margin-top: 16px;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        #loginMsg.show {
+            opacity: 1;
+        }
+
+        #loginMsg.error {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        #loginMsg.success {
+            background: #c6f6d5;
+            color: #276749;
+        }
+
+        .autofill-trap {
+            position: absolute;
+            opacity: 0;
+            height: 0;
+            width: 0;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="particles">
-    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
-    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
-    <div class="particle"></div><div class="particle"></div><div class="particle"></div>
-</div>
-
-<form autocomplete="off" onsubmit="return false;">
-<div class="container">
-
-    <div class="logo">
-        <div class="logo-icon">🧭</div>
-        <h2>Welcome Back</h2>
-        <p class="subtitle">Sign in to Cross-Domain Knowledge Mapping</p>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
     </div>
 
-    <input class="autofill-trap" type="text">
-    <input class="autofill-trap" type="password">
+    <form autocomplete="off" onsubmit="return false;">
+        <div class="container">
 
-    <div class="input-group">
-        <input id="loginUser" type="text" placeholder="Username" required>
-        <span class="input-icon">👤</span>
-    </div>
+            <div class="logo">
+                <div class="logo-icon">🧭</div>
+                <h2>Welcome Back</h2>
+                <p class="subtitle">Sign in to Cross-Domain Knowledge Mapping</p>
+            </div>
 
-    <div class="input-group">
-        <input id="loginPass" type="password" placeholder="Password" required>
-        <span class="input-icon">🔒</span>
-    </div>
+            <input class="autofill-trap" type="text">
+            <input class="autofill-trap" type="password">
 
-    <button class="btn" id="loginBtn" onclick="login()">Sign In</button>
+            <div class="input-group">
+                <input id="loginUser" type="text" placeholder="Username" required>
+                <span class="input-icon">👤</span>
+            </div>
 
-    <div id="loginMsg"></div>
+            <div class="input-group">
+                <input id="loginPass" type="password" placeholder="Password" required>
+                <span class="input-icon">🔒</span>
+            </div>
 
-    <div class="links">
-        <a class="link" onclick="location.href='/register-page'">Create Account</a>
-        <a class="link" onclick="location.href='/forgot-page'">Forgot Password?</a>
-    </div>
+            <button class="btn" id="loginBtn" onclick="login()">Sign In</button>
 
-</div>
-</form>
+            <div id="loginMsg"></div>
 
-<script>
-function showMessage(msg,type){
-    const el=document.getElementById("loginMsg");
-    el.textContent=msg;
-    el.className="show "+type;
-}
+            <div class="links">
+                <a class="link" onclick="location.href='/register-page'">Create Account</a>
+                <a class="link" onclick="location.href='/forgot-page'">Forgot Password?</a>
+            </div>
 
-async function login(){
-    const btn=document.getElementById("loginBtn");
-    const username=loginUser.value.trim();
-    const password=loginPass.value;
+        </div>
+    </form>
 
-    if(!username||!password){
-        showMessage("Please fill all fields","error");
-        return;
-    }
+    <script>
+        function showMessage(msg, type) {
+            const el = document.getElementById("loginMsg");
+            el.textContent = msg;
+            el.className = "show " + type;
+        }
 
-    btn.textContent="Signing In...";
+        async function login() {
+            const btn = document.getElementById("loginBtn");
+            const username = loginUser.value.trim();
+            const password = loginPass.value;
 
-    try{
-        const res=await fetch("http://127.0.0.1:5000/login",{
-            method:"POST",
-            headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({username,password})
-        });
+            if (!username || !password) {
+                showMessage("Please fill all fields", "error");
+                return;
+            }
 
-        const data=await res.json();
+            btn.textContent = "Signing In...";
 
-               if (res.status === 200) {
-    localStorage.setItem("token", data.token);
-    showMessage("Login Successful!", "success");
-    setTimeout(() => {
-        location.href = "http://localhost:8502/?token=" + encodeURIComponent(data.token);
-    }, 800);
-} else {
-    showMessage(data.msg, "error");
-    btn.textContent = "Sign In";
-}
+            try {
+                const res = await fetch("http://127.0.0.1:5000/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password })
+                });
 
-    }catch{
-        showMessage("Server Error","error");
-        btn.textContent="Sign In";
-    }
-}
-</script>
+                const data = await res.json();
+
+                if (res.status === 200) {
+                    localStorage.setItem("token", data.token);
+                    showMessage("Login Successful!", "success");
+                    setTimeout(() => {
+                        location.href = "http://localhost:8501/?token=" + encodeURIComponent(data.token);
+                    }, 800);
+                } else {
+                    showMessage(data.msg, "error");
+                    btn.textContent = "Sign In";
+                }
+
+            } catch {
+                showMessage("Server Error", "error");
+                btn.textContent = "Sign In";
+            }
+        }
+    </script>
 
 </body>
+
 </html>

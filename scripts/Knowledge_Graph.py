@@ -104,7 +104,7 @@ const options = {
 """)
 
 # -- STEP 3: Save interactive HTML file --
-net.show("small_knowledge_graph.html", notebook=False)
+net.show("../small_knowledge_graph.html", notebook=False)
 print("✓ Interactive knowledge graph saved as 'cross_domain_knowledge_graph.html'")
 
 # -- STEP 4: Print ALL interconnected component node clusters --

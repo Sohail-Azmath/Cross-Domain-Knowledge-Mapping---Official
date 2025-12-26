@@ -51,3 +51,13 @@ dist/
 *.pem
 *.key
 *.crt
+
+# =========================
+# Project Specific Artifacts
+# =========================
+# Generated Data (Can be recreated by scripts)
+Data/Processed/
+cross_domain_embeddings.pkl
+# Generated Visualizations
+knowledge_graph.html
+small_knowledge_graph.html

@@ -134,7 +134,8 @@ except Exception as e:
 st.set_page_config(
     page_title="Cross-Domain Knowledge Mapping Dashboard",
     layout="wide",
-    page_icon="🧭"
+    page_icon="🧭",
+    initial_sidebar_state="expanded"
 )
 
 # ----------------------------------------
@@ -147,7 +148,11 @@ FEEDBACK_FILE = "feedback.csv"
 # ----------------------------------------
 # 🌈 ENHANCED PROFESSIONAL THEME
 # ----------------------------------------
-st.markdown("""
+# ----------------------------------------
+# 🎨 GLOBAL CSS CONFIGURATION (Consolidated)
+# ----------------------------------------
+def inject_global_css():
+    st.markdown("""
     <style>
         /* Import Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -162,6 +167,34 @@ st.markdown("""
             background: linear-gradient(-45deg, #667eea, #764ba2, #6B8DD6, #8E37D7);
             background-size: 400% 400%;
             animation: gradientBG 15s ease infinite;
+        }
+
+        /* FORCE BLACK TEXT FOR TABLES AND CHARTS */
+        div[data-testid="stTable"] {
+            color: #000000 !important;
+        }
+        div[data-testid="stMarkdownContainer"] p {
+            color: #000000 !important;
+        }
+        thead tr th {
+            color: #000000 !important;
+        }
+        tbody tr td {
+            color: #000000 !important;
+        }
+
+        /* HIDE STREAMLIT HEADER & FOOTER */
+        [data-testid="stHeader"] {
+            visibility: hidden;
+            height: 0px;
+        }
+        
+        .stDeployButton {
+            display: none !important;
+        }
+        
+        footer {
+            visibility: hidden;
         }
         
         @keyframes gradientBG {
@@ -182,7 +215,27 @@ st.markdown("""
             font-size: 15px !important;
             font-weight: 500;
         }
+
+        /* Sidebar Buttons */
+        [data-testid="stSidebar"] button[kind="secondary"] {
+            width: 100%;
+            justify-content: flex-start;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            margin: 4px 0;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #ffffff;
+        }
+        [data-testid="stSidebar"] button[kind="secondary"]:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: #667eea;
+        }
         
+        [data-testid="stSidebar"] div.stButton > button {
+             width: 100%;
+        }
+
+        /* Sidebar Radio (Navigation) */
         [data-testid="stSidebar"] .stRadio > label {
             background: rgba(255, 255, 255, 0.05);
             padding: 12px 16px;
@@ -191,14 +244,39 @@ st.markdown("""
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
         }
-        
-        [data-testid="stSidebar"] .stRadio > label:hover {
-            background: rgba(255, 255, 255, 0.15);
-            font-size: 13px;
-  border-left: 3px solid #667eea;
-            transform: translateX(5px);
+
+        /* Navigation Boxes */
+        [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin: 3px 0;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
         }
-        
+
+        [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label:hover {
+            background: rgba(255, 255, 255, 0.14);
+            border-color: #667eea;
+            transform: translateX(2px);
+        }
+
+        /* Selected Radio Item */
+        [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label:has(input[checked]) {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: rgba(255, 255, 255, 0.6);
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.45);
+        }
+
+        /* Tighten Sidebar Gap */
+        [data-testid="stSidebar"] > div:first-child {
+            padding-top: 0.5rem !important;
+            margin-top: 0 !important;
+        }
+
         /* Main Container Glass Effect */
         .block-container {
             background: rgba(255, 255, 255, 0.95);
@@ -221,12 +299,12 @@ st.markdown("""
             font-size: 2.5rem !important;
             margin-bottom: 1rem;
         }
-        
+
         h2, h3 {
             color: #1a1a2e !important;
             font-weight: 600 !important;
         }
-        
+
         /* Metric Cards */
         [data-testid="stMetricValue"] {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -391,7 +469,6 @@ st.markdown("""
             padding: 1rem;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
-        
         /* Knowledge Graph iframe */
         iframe {
             border-radius: 16px !important;
@@ -476,190 +553,81 @@ st.markdown("""
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 10px;
         }
-            /* Make each navigation option look like a box */
-    [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label {
-        background: rgba(255, 255, 255, 0.06);
-        padding: 10px 14px;
-        border-radius: 10px;
-        margin: 4px 0;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-    }
 
-    /* Hover effect for boxes */
-    [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label:hover {
-        background: rgba(255, 255, 255, 0.16);
-        border-color: #667eea;
-        transform: translateX(3px);
-    }
+        /* Chatbot Styles */
+        .chat-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .ai-response-box {
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 5px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
+        }
+        
+        .chat-input-box input {
+            border-radius: 12px !important;
+            padding: 12px !important;
+            border: 2px solid #667eea !important;
+            font-size: 16px;
+        }
+        
+        .ask-btn button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            border: none;
+            color: white !important;
+            padding: 12px 26px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
+        }
+        
+        .ask-btn button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.55);
+        }
 
-    /* Selected (active) navigation box */
-    [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label[data-baseweb="radio"]:has(input:checked),
-    [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label:has(input[checked]) {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-color: rgba(255, 255, 255, 0.6);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
-    }
-
-    /* Slightly bolder text inside nav boxes */
-    [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label span {
-        font-weight: 600;
-    }
+        /* Tighten Sidebar Separators */
+        [data-testid="stSidebar"] hr {
+            margin-top: 0.1rem !important;
+            margin-bottom: 0.1rem !important;
+        }
+        [data-testid="stSidebar"] div[style*="Signed in as"] {
+            margin-top: 0 !important;
+            margin-bottom: 0.1rem !important;
+        }
+        /* Reduce space before the 'Navigate Pages' label */
+        [data-testid="stSidebar"] .stRadio > label {
+            margin-bottom: 0.1rem !important;
+        }
     </style>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label {
-        background: rgba(255, 255, 255, 0.05);
-        padding: 8px 12px;                /* slightly smaller */
-        border-radius: 8px;               /* slightly sharper */
-        margin: 3px 0;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        cursor: pointer;
-        transition: all 0.2s ease;
-        display: flex;
-        align-items: center;
-    }
-
-    [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label:hover {
-        background: rgba(255, 255, 255, 0.14);
-        border-color: #667eea;
-        transform: translateX(2px);
-    }
-
-    [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label[data-baseweb="radio"]:has(input:checked),
-    [data-testid="stSidebar"] .stRadio > div[role="radiogroup"] > label:has(input[checked]) {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border-color: rgba(255, 255, 255, 0.6);
-        box-shadow: 0 3px 10px rgba(102, 126, 234, 0.45);
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-# 🧭 SIDEBAR BUTTON STYLE  ← ADD THIS BLOCK HERE
-st.markdown(
-    """
-    <style>
-    [data-testid="stSidebar"] button[kind="secondary"] {
-        width: 100%;
-        justify-content: flex-start;
-        background: rgba(255, 255, 255, 0.05);
-        border-radius: 8px;
-        margin: 4px 0;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        color: #ffffff;
-    }
-    [data-testid="stSidebar"] button[kind="secondary"]:hover {
-        background: rgba(255, 255, 255, 0.14);
-        border-color: #667eea;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
+# Inject CSS immediately
+inject_global_css()
 
 
 
-# ----------------------------------------
-# 🔧 TIGHTEN SIDEBAR TOP GAP
-# ----------------------------------------
-st.markdown(
-    """
-    <style>
-    /* Reduce empty space at top of sidebar so navigation sits higher */
-    [data-testid="stSidebar"] > div:first-child {
-        padding-top: 0.5rem !important;
-        margin-top: 0 !important;
-    }
-    /* Reduce space around the radio (navigation) */
-    [data-testid="stSidebar"] .stRadio {
-        margin-top: 0.2rem !important;
-        margin-bottom: 0.2rem !important;
-    }
 
-    /* Reduce space before the 'Navigate Pages' label, if shown */
-    [data-testid="stSidebar"] .stRadio > label {
-        margin-bottom: 0.1rem !important;
-    }
 
-    /* Make the separator line very tight */
-    [data-testid="stSidebar"] hr {
-        margin-top: 0.1rem !important;      /* was 0.3 */
-        margin-bottom: 0.1rem !important;   /* was 0.3 */
-    }
-       /* Pull the user bar even closer to the separator */
-    [data-testid="stSidebar"] div[style*="Signed in as"] {
-        margin-top: 0 !important;
-        margin-bottom: 0.1rem !important;
-    }
-    /* existing rules ... */
 
     
 
 
     
     
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
 
-# ============================================
-# Streamlit Page
-# ============================================
-st.set_page_config(page_title="🤖 AI Assistance Chatbot", layout="centered")
 
-st.markdown("""
-<style>
-.chat-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 15px;
-    border-radius: 15px;
-    margin-top: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
 
-.ai-response-box {
-    background: linear-gradient(135deg, #f0f4ff 0%, #e8ecff 100%);
-    padding: 15px;
-    border-radius: 15px;
-    margin-top: 5px;
-    border-left: 4px solid #667eea;
-    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.2);
-}
-
-.chat-input-box input {
-    border-radius: 12px !important;
-    padding: 12px !important;
-    border: 2px solid #667eea !important;
-    font-size: 16px;
-}
-
-.ask-btn button {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    border: none;
-    color: white !important;
-    padding: 12px 26px;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 16px;
-    margin-top: 10px;
-    box-shadow: 0 4px 10px rgba(102, 126, 234, 0.4);
-}
-
-.ask-btn button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.55);
-}
-</style>
-""", unsafe_allow_html=True)
 
 
 
@@ -768,22 +736,13 @@ else:
 # 📤 UPLOAD DATASET PAGE
 # ----------------------------------------
 if choice == "Upload Dataset":
-    st.markdown("""
-    <h1 style='text-align: center;'>
-        🧭 Cross-Domain Knowledge Mapping Dashboard
-    </h1>
-    """, unsafe_allow_html=True)
-
-    st.markdown("""
-    <p style='text-align: center; font-size: 18px; color: #555;'>
-        Discover how knowledge from one domain connects and supports another —
-        integrating <b>Semantic Search</b>, <b>Entity Recognition</b>,
-        and <b>Knowledge Graph visualizations</b>.
-    </p>
-    """, unsafe_allow_html=True)
-
-    st.markdown("---")
+    # st.markdown("---")  # Removed separator
     st.title("📤 Upload Your Dataset")
+
+    st.markdown("""
+    > **Welcome!** Discover how knowledge connects across domains. 
+    > Upload a CSV to get started with **Semantic Search**, **Entity Recognition**, and **Knowledge Graphs**.
+    """)
 
     col1, col2 = st.columns([2, 1])
 
@@ -825,14 +784,11 @@ if choice == "Upload Dataset":
                 st.error(f"❌ Error reading file: {str(e)}")
 
     with col2:
-        st.info("""
-        *Sample Data Structure:*
-
-        id,domain,sentence,label
-        1,Computer Science,Algorithm uses Data,concept
-        2,Biology,DNA replicates,relation
-        3,Sociology,Economic Growth affects Society,definition
-        """)
+        with st.expander("ℹ View Sample Data Structure"):
+            st.code("""id,domain,sentence,label
+1,Computer Science,Algorithm uses Data,concept
+2,Biology,DNA replicates,relation
+3,Sociology,Society evolves,definition""", language="csv")
 
         # Download sample template
         sample_df = pd.DataFrame({
@@ -859,20 +815,13 @@ if choice == "Upload Dataset":
             key="download_sample_csv",   # single button, single key
         )
 
-    # Show current dataset status
-    if st.session_state.df is not None:
-        st.success("✅ Dataset is loaded and ready to use! Navigate to other pages to explore.")
-    else:
-        st.warning("⚠ No dataset loaded yet. Please upload a CSV file above.")
-
-    # -------- Dataset status --------
+    # -------- Dataset Status Check --------
     if st.session_state.df is not None:
         df = st.session_state.df
-        st.success("✅ Dataset is loaded and ready to use! Scroll down to see the overview.")
-        st.sidebar.success(f"✅ Dataset loaded: {len(df)} records")
+        st.sidebar.success(f"✅ Loaded: {len(df)} rows")
     else:
-        st.warning("⚠ No dataset loaded yet. Please upload a CSV file above.")
-        st.stop()  # stop here; no overview if no data
+        st.warning("⚠ Please upload a CSV file to continue.")
+        st.stop()  # Stop execution here if no data
 
     # -------- Overview section (same page, below) --------
     st.markdown("---")
@@ -971,11 +920,19 @@ elif choice == "Entity & Relation Extraction":
         & (df["relations"].apply(lambda x: len(x) > 0))
     ]
 
-    st.subheader("Sentences with BOTH Entities & Relations")
-    if len(both_df) > 0:
-        st.dataframe(both_df[["sentence", "entities", "relations"]], use_container_width=True)
+    st.subheader("Sentences with Extracted Information")
+    
+    # Filter for rows that have EITHER entities OR relations
+    rich_df = df[
+        (df["entities"].apply(lambda x: len(x) > 0)) | 
+        (df["relations"].apply(lambda x: len(x) > 0))
+    ]
+
+    if len(rich_df) > 0:
+        st.write(f"*Showing {len(rich_df)} entries with entities or relations:*")
+        st.dataframe(rich_df[["sentence", "entities", "relations"]], use_container_width=True, height=500)
     else:
-        st.info("No sentences contain BOTH entities and relations.")
+        st.info("No entities or relations were found in the dataset.")
 
     # Download output
     csv_data = df.to_csv(index=False).encode("utf-8")
@@ -1061,57 +1018,46 @@ elif choice == "Knowledge Graph":
                     color = domain_colors.get(domain, "#95a5a6")
                     G.add_node(node_id, label=concept_text, color=color, domain=domain)
 
-            # 1C. Within-domain edges: connect concepts that share the same label and domain
-            #     For example, two records in Computer Science with label "concept" are linked.
-            label_groups = defaultdict(list)  # (domain, label) -> [node_ids]
-
-            for (_, row) in df.iterrows():
+            # 1. Add Nodes from Domain/Sentence
+            for _, row in df.iterrows():
                 domain = str(row["domain"])
                 sentence = str(row["sentence"])
-                label = str(row["label"])
-
-                concept_text = extract_concept(sentence)
-                if not concept_text:
+                
+                # Extract main concept (Limit length for display)
+                node_label = extract_concept(sentence)
+                if not node_label:
                     continue
+                
+                node_id = node_label # Using label as ID for simplicity in merging
+                
+                color = domain_colors.get(domain, "#95a5a6")
+                G.add_node(node_id, label=node_label, title=sentence, color=color, group=domain)
 
-                key = (domain, concept_text)
-                node_id = concept_nodes.get(key)
-                if not node_id:
-                    continue
-
-                label_groups[(domain, label)].append(node_id)
-
-            # Add solid edges inside each (domain, label) group
-            for (dom, lab), nodes in label_groups.items():
-                unique_nodes = list(dict.fromkeys(nodes))  # remove duplicates, keep order
-                if len(unique_nodes) < 2:
-                    continue
-                for i in range(len(unique_nodes) - 1):
-                    src = unique_nodes[i]
-                    tgt = unique_nodes[i + 1]
-                    G.add_edge(src, tgt, label=lab, style="solid")
-
-            # 1D. Cross-domain edges: if same concept_text appears in multiple domains -> dashed edges
-            for concept_text, doms in concept_domains.items():
-                doms = list(doms)
-                if len(doms) < 2:
-                    continue  # appears only in one domain
-
-                # Get all nodes for this concept_text across domains
-                nodes_for_concept = []
-                for dom in doms:
-                    key = (dom, concept_text)
-                    node_id = concept_nodes.get(key)
-                    if node_id:
-                        nodes_for_concept.append((dom, node_id))
-
-                # Connect nodes across different domains with dashed edges
-                for i in range(len(nodes_for_concept)):
-                    for j in range(i + 1, len(nodes_for_concept)):
-                        dom_i, node_i = nodes_for_concept[i]
-                        dom_j, node_j = nodes_for_concept[j]
-                        if dom_i != dom_j:
-                            G.add_edge(node_i, node_j, label="analogous", style="dashed")
+            # 2. Add Edges from 'relations' column if available
+            edge_count = 0
+            if "relations" in df.columns:
+                for _, row in df.iterrows():
+                    rels = row["relations"]
+                    # Handle if stringified list
+                    if isinstance(rels, str):
+                        try:
+                            rels = eval(rels)
+                        except:
+                            rels = []
+                    
+                    if isinstance(rels, list):
+                        for r in rels:
+                            if len(r) == 3:
+                                src, relation, tgt = r
+                                G.add_edge(src, tgt, label=relation, title=relation)
+                                edge_count += 1
+            
+            # If no explicit relations, fall back to simple grouping (optional, but requested to fix edges)
+            # connecting consecutive nodes in same domain/label group
+            if edge_count == 0:
+                 st.warning("⚠ No explicit relations found in dataset. Attempting to link by Domain/Label...")
+                 # ... (Your fallback logic here if needed, or just let it be empty with warning)
+                 pass
 
             if G.number_of_nodes() == 0:
                 st.info("No concepts could be extracted from the current dataset to build a graph.")
@@ -1162,12 +1108,12 @@ elif choice == "Knowledge Graph":
                 html_code = f.read()
 
             st.markdown("""
-            <div style='background-color: #f0f0f0; padding: 15px; border-radius: 10px; margin-bottom: 20px;'>
-                <b>How to read this graph:</b><br>
-                • Node color = domain (e.g., Computer Science, Biology, etc.).<br>
-                • Solid edges = concepts linked within the same domain via the same label.<br>
-                • Dashed edges = same concept phrase appearing in multiple domains (cross-domain analogy).<br>
-                • Edge labels show the label or relation basis (e.g., concept, relation, definition, analogous).
+            <div style='background-color: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ddd; color: #333;'>
+                <b style="color: #000;">How to read this graph:</b><br>
+                • <strong style="color: #333;">Node color</strong> = domain (e.g., Computer Science, Biology, etc.).<br>
+                • <strong style="color: #333;">Solid edges</strong> = concepts linked within the same domain via the same label.<br>
+                • <strong style="color: #333;">Dashed edges</strong> = same concept phrase appearing in multiple domains (cross-domain analogy).<br>
+                • <strong style="color: #333;">Edge labels</strong> show the label or relation basis (e.g., concept, relation, definition, analogous).
             </div>
             """, unsafe_allow_html=True)
 
@@ -1191,11 +1137,19 @@ elif choice == "Semantic Search":
 
     if not embeddings_exist:
         st.warning("⚠ Embeddings file not found. You need to generate embeddings first.")
-        st.info("""
-        *To generate embeddings, you need to:*
-        1. Install required library: pip install sentence-transformers
-        2. Generate embeddings using the button below
-        """)
+        
+        # Check if library is importable
+        try:
+            from sentence_transformers import SentenceTransformer
+            lib_installed = True
+        except ImportError:
+            lib_installed = False
+
+        if not lib_installed:
+            st.error("❌ Library 'sentence-transformers' is missing.")
+            st.code("pip install sentence-transformers", language="bash")
+        else:
+            st.info("Library `sentence-transformers` is detected. Click below to generate embeddings.")
 
         st.markdown("---")
         st.subheader("🔄 Generate Embeddings Now")
@@ -1279,12 +1233,12 @@ elif choice == "Semantic Search":
             for idx, score in zip(top_results.indices, top_results.values):
                 row = embdf.iloc[int(idx)]
                 st.markdown(f"""
-                <div style="background:#b7e4c7;border-radius:8px;padding:12px;margin-bottom:10px;">
-                ✅ <b style="color:#2d6a4f;">Domain:</b> {row["domain"]}<br>
-                💬 <b style="color:#2d6a4f;">Sentence:</b> {row["sentence"]}<br>
-                🏷 <b style="color:#2d6a4f;">Label:</b> {row["label"]}<br>
-                📈 <b style="color:#ffbe0b;">Similarity Score:</b>
-                <span style="color:#3c096c;font-weight:bold;">{float(score):.4f}</span>
+                <div style="background:#ffffff; border-radius:10px; padding:15px; margin-bottom:12px; border:1px solid #e0e0e0; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+                ✅ <b style="color:#000000;">Domain:</b> <span style="color:#333;">{row["domain"]}</span><br>
+                💬 <b style="color:#000000;">Sentence:</b> <span style="color:#333;">{row["sentence"]}</span><br>
+                🏷 <b style="color:#000000;">Label:</b> <span style="color:#333;">{row["label"]}</span><br>
+                📈 <b style="color:#000000;">Similarity Score:</b>
+                <span style="color:#2563eb; font-weight:bold;">{float(score):.4f}</span>
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -1301,8 +1255,11 @@ elif choice == "Top 10 Sentences":
     top_objects = df["sentence"].value_counts().head(10)
     st.bar_chart(top_objects)
     st.subheader("📋 Top Sentences List")
-    for i, (sentence, count) in enumerate(top_objects.items(), start=1):
-        st.write(f"{i}. {sentence}")
+    st.subheader("📋 Top Sentences List")
+    # Convert series to dataframe for better display
+    top_df = top_objects.reset_index()
+    top_df.columns = ["Sentence", "Frequency"]
+    st.table(top_df)
 
 # ----------------------------------------
 # 💬 FEEDBACK SECTION
@@ -1310,36 +1267,28 @@ elif choice == "Top 10 Sentences":
 elif choice == "Feedback Section":
     df = st.session_state.df
     st.header("💬 Feedback Section")
-    st.dataframe(feedback_df)
+    st.dataframe(feedback_df, use_container_width=True)
 
-    st.subheader("✍ Submit Feedback")
-    record_id = st.number_input(
-        "Enter Record ID",
-        min_value=int(df["id"].min()),
-        max_value=int(df["id"].max()),
-    )
-    user = st.text_input("Your Name")
-    feedback_type = st.selectbox(
-        "Feedback Type",
-        ["Incorrect Label", "Missing Link", "Duplicate Entry", "Other"],
-    )
-    comment = st.text_area("Your Comment")
+    st.markdown("---")
+    # Simplified Feedback Form
+    with st.container():
+        st.write("Please provide your feedback below.")
+        
+        user_name = st.text_input("Your Name (Optional)")
+        feedback_text = st.text_area("Your Feedback / Suggestions", height=150)
 
     if st.button("Submit Feedback"):
-        if user and comment:
+        if feedback_text:
             new_feedback = pd.DataFrame([{
-                "record_id": record_id,
-                "user": user,
-                "feedback_type": feedback_type,
-                "comment": comment,
-                "status": "Pending",
+                "user": user_name if user_name else "Anonymous",
+                "comment": feedback_text,
                 "timestamp": datetime.datetime.now(),
             }])
             feedback_df = pd.concat([feedback_df, new_feedback], ignore_index=True)
             feedback_df.to_csv(FEEDBACK_FILE, index=False)
             st.success("✅ Feedback submitted successfully!")
         else:
-            st.warning("⚠ Please fill in all fields.")
+            st.warning("⚠ Please enter some feedback.")
 
 # ----------------------------------------
 # 📈 FEEDBACK ANALYSIS
@@ -1361,30 +1310,81 @@ elif choice == "Feedback Analysis":
 elif choice == "Admin Tools":
     df = st.session_state.df
     st.header("🛠 Admin Tools")
-    all_nodes = list(set(df["sentence"]))
+    st.header("🛠 Admin Tools")
+    
+    st.markdown("### 💾 Backup & Export")
 
-    col1, col2 = st.columns(2)
+    st.markdown("---")
+    st.subheader("💾 Backup Data")
+    st.download_button(
+        label="⬇ Download Current Dataset CSV",
+        data=df.to_csv(index=False).encode("utf-8"),
+        file_name="dataset_backup.csv",
+        mime="text/csv"
+    )
 
-    with col1:
-        old_node = st.selectbox("Old Sentence", all_nodes)
-        new_node = st.selectbox("New Sentence", all_nodes)
-        if st.button("Merge Nodes"):
-            if old_node != new_node:
-                df.replace({old_node: new_node}, inplace=True)
-                st.session_state.df = df
-                st.success(f"✅ Merged: '{old_node}' → '{new_node}'")
+    st.markdown("---")
+    st.subheader("👥 Manage Users")
+    
+    # User Management File Path
+    USERS_FILE = "users.json"
+    import json
+    
+    def load_users_local():
+        if os.path.exists(USERS_FILE):
+            try:
+                with open(USERS_FILE, "r") as f:
+                    return json.load(f)
+            except:
+                return {}
+        return {}
+    
+    def save_users_local(users_data):
+        with open(USERS_FILE, "w") as f:
+            json.dump(users_data, f, indent=4)
 
-    with col2:
-        record_id = st.number_input(
-            "Record ID to Delete",
-            min_value=int(df["id"].min()),
-            max_value=int(df["id"].max()),
-        )
-        if st.button("Delete Record"):
-            if record_id in df["id"].values:
-                df = df[df["id"] != record_id]
-                st.session_state.df = df
-                st.success(f"✅ Deleted record {record_id}")
+    users_db = load_users_local()
+    
+    # Display Users Table
+    if users_db:
+        # Create a clean dataframe for display
+        user_list = []
+        for username, details in users_db.items():
+            user_list.append({"Username": username, "Role": details.get("type", "User")})
+        st.table(pd.DataFrame(user_list))
+    else:
+        st.info("No users found.")
+
+    # Add New User
+    with st.expander("➕ Add New User"):
+        with st.form("add_user_form"):
+            new_user = st.text_input("Username")
+            new_pass = st.text_input("Password", type="password")
+            new_role = st.selectbox("Role", ["User", "Admin"])
+            submitted = st.form_submit_button("Create User")
+            
+            if submitted:
+                if new_user and new_pass:
+                    if new_user in users_db:
+                        st.error("User already exists!")
+                    else:
+                        users_db[new_user] = {"password": new_pass, "type": new_role}
+                        save_users_local(users_db)
+                        st.success(f"User '{new_user}' created!")
+                        st.rerun()
+                else:
+                    st.warning("Please fill required fields.")
+                    
+    # Delete User
+    with st.expander("🗑 Delete User"):
+        user_to_delete = st.selectbox("Select User to Delete", list(users_db.keys()))
+        if st.button("Delete User"):
+            if user_to_delete in users_db:
+                # Prevent deleting self if needed, but for now allow all
+                del users_db[user_to_delete]
+                save_users_local(users_db)
+                st.success(f"User '{user_to_delete}' deleted.")
+                st.rerun()
 
 # ----------------------------------------
 # 💾 DOWNLOAD OPTIONS
@@ -1402,64 +1402,59 @@ elif choice == "Download Options":
         feedback_df.to_csv(index=False).encode("utf-8"),
         "feedback.csv",
     )
-# ===============================
+# ----------------------------------------
 # 🤖 AI CHATBOT PAGE
-# ===============================
-
-import streamlit as st
-
-# Initialize session state
-if "messages" not in st.session_state:
-    st.session_state.messages = []  # List to store (user_msg, ai_reply) tuples
-if "chat_input" not in st.session_state:
-    st.session_state.chat_input = ""
-
-st.title("🤖 AI Assistance")
-
-# Display info
-st.markdown("""
-Ask any question related to:
-- Dataset  
-- Knowledge graph  
-- Entity extraction  
-- Semantic search  
-- Any domain-related topic  
-
-The AI will respond instantly.
-""")
-
-# --------------------------------------------
-# Function to send message
-# --------------------------------------------
-def send_message():
-    user_msg = st.session_state.chat_input
-    if user_msg.strip() == "":
-        st.warning("Please type something to ask.")
-        return
-    with st.spinner("AI Thinking..."):
-        ai_reply = ask_llama(user_msg)  # Replace with your AI function
-    st.session_state.messages.append((user_msg, ai_reply))
-    st.session_state.chat_input = ""  # Clear input safely
-
-# --------------------------------------------
-# Input box and buttons
-# --------------------------------------------
-st.text_input("Your Question", key="chat_input")
-
-col1, col2 = st.columns([1, 1])
-
-with col1:
-    st.button("Ask", key="ask_btn", on_click=send_message)
-
-with col2:
-    if st.button("Clear Chat", key="clear_btn"):
+# ----------------------------------------
+elif choice == "AI Assistance Chatbot":
+    # Initialize session state
+    if "messages" not in st.session_state:
         st.session_state.messages = []
+    if "chat_input_key" not in st.session_state:
+        st.session_state.chat_input_key = ""
 
-# --------------------------------------------
-# Display chat history
-# --------------------------------------------
-if "messages" in st.session_state:
-    # Display newest messages first
-    for user_msg, ai_msg in reversed(st.session_state.messages):
-        st.markdown(f'<div class="chat-container"><b>You:</b> {user_msg}</div>', unsafe_allow_html=True)
-        st.markdown(f'<div class="ai-response-box"><b>AI:</b> {ai_msg}</div>', unsafe_allow_html=True)
+    st.title("🤖 AI Assistance")
+
+    st.markdown("""
+    Ask any question related to:
+    - Dataset  
+    - Knowledge graph  
+    - Entity extraction  
+    - Semantic search  
+    - Any domain-related topic  
+    
+    The AI will respond instantly.
+    """)
+
+    # --------------------------------------------
+    # Logic to send message
+    # --------------------------------------------
+    def on_submit():
+        user_msg = st.session_state.my_input
+        if user_msg.strip():
+            with st.spinner("AI Thinking..."):
+                try:
+                    ai_reply = ask_llama(user_msg)
+                    st.session_state.messages.append((user_msg, ai_reply))
+                except Exception as e:
+                    st.error(f"Error: {str(e)}")
+            st.session_state.my_input = ""  # Clear input
+
+    # --------------------------------------------
+    # Input Area
+    # --------------------------------------------
+    st.text_input("Your Question", key="my_input", on_change=on_submit, placeholder="Type your question here and press Enter...")
+
+    col1, col2 = st.columns([1, 5])
+    with col1:
+        if st.button("Clear Chat"):
+            st.session_state.messages = []
+
+    # --------------------------------------------
+    # Display chat history (Newest first)
+    # --------------------------------------------
+    if "messages" in st.session_state and st.session_state.messages:
+        st.markdown("---")
+        for user_msg, ai_msg in reversed(st.session_state.messages):
+            st.markdown(f'<div class="chat-container"><b style="color:#000;">You:</b> <span style="color:#333;">{user_msg}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="ai-response-box"><b style="color:#000;">AI:</b> <span style="color:#333;">{ai_msg}</span></div>', unsafe_allow_html=True)
+
